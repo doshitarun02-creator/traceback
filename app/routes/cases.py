@@ -12,14 +12,24 @@ from app.utils.response import success
 cases_bp = Blueprint("cases", __name__)
 
 
+# Simple in-memory cache — no Redis needed
+_stats_cache = {"data": None, "expires_at": 0}
+
 @cases_bp.route("/stats/live", methods=["GET"])
 def get_live_stats():
-    """Return live counter data and platform statistics."""
+    """Return live counter data and platform statistics (cached for 60s)."""
+    import time
+    now_ts = time.time()
+    
+    # Check cache
+    if _stats_cache["data"] and now_ts < _stats_cache["expires_at"]:
+        return success(_stats_cache["data"])
+
     # Real-time counter logic based on 88,976 complaints/day
     complaints_per_day = 88976
-    now = datetime.now(timezone.utc)
-    start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
-    elapsed_seconds = (now - start_of_day).total_seconds()
+    now_dt = datetime.now(timezone.utc)
+    start_of_day = now_dt.replace(hour=0, minute=0, second=0, microsecond=0)
+    elapsed_seconds = (now_dt - start_of_day).total_seconds()
     
     current_count = int(elapsed_seconds * (complaints_per_day / 86400))
     
@@ -31,9 +41,15 @@ def get_live_stats():
     total_recovered = list(total_recovered)
     total_recovered_amount = total_recovered[0]["total"] if total_recovered else 0
 
-    return success({
+    stats = {
         "live_complaints_today": current_count,
         "platform_total_cases": total_complaints,
         "platform_total_recovered": total_recovered_amount,
-        "timestamp": now.isoformat()
-    })
+        "timestamp": now_dt.isoformat()
+    }
+
+    # Update cache
+    _stats_cache["data"] = stats
+    _stats_cache["expires_at"] = now_ts + 60  # cache 60 seconds
+    
+    return success(stats)

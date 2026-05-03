@@ -40,8 +40,6 @@ mongo: PyMongo = PyMongo()
 # Exempt a route entirely with: @limiter.exempt
 limiter: Limiter = Limiter(
     key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"],
-    storage_uri="memory://",          # overridden by init_app() config
     headers_enabled=True,             # exposes X-RateLimit-* headers
 )
 
