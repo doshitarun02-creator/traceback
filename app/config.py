@@ -46,8 +46,10 @@ class BaseConfig:
     JWT_ALGORITHM: str = os.environ.get("JWT_ALGORITHM", "HS256")
 
     # ── CORS ──────────────────────────────────────────────────────────────
-    CORS_ORIGINS: list[str] = os.environ.get(
-        "CORS_ORIGINS", "http://localhost:5173"
+    # For production, set this to your exact frontend domain in Render.
+    # For now, we allow '*' to ensure the deployment works immediately.
+    CORS_ORIGINS: list[str] | str = os.environ.get(
+        "CORS_ORIGINS", "*"
     ).split(",")
 
     # ── Rate Limiting (Flask-Limiter) ─────────────────────────────────────
