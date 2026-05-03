@@ -1126,7 +1126,7 @@
             try {
                 const res = await fetch(`${API_BASE}/cases/stats/live`);
                 const data = await res.json();
-                if (data.status === 'success') {
+                if (data.success && data.data) {
                     if (counterEl) counterEl.textContent = data.data.live_complaints_today.toLocaleString('en-IN');
                 }
             } catch (err) {
@@ -1216,7 +1216,7 @@
                 const res = await fetch(url);
                 const data = await res.json();
                 
-                if (data.status === 'success') {
+                if (data.success && data.data && data.data.experts) {
                     renderExperts(data.data.experts);
                 }
             } catch (err) {
@@ -1266,15 +1266,14 @@
             btn.disabled = true;
 
             try {
-                // Collect Form Data
                 const step1 = document.getElementById('step-1');
                 const step2 = document.getElementById('step-2');
                 const step3 = document.getElementById('step-3');
 
                 const complaintData = {
                     fraud_type: step1.querySelector('select').value.toLowerCase().replace(/ /g, '_'),
-                    amount_lost: parseFloat(step1.querySelector('input[type="text"]').value.replace(/[^0-9.]/g, '')),
-                    incident_date: step1.querySelector('input[type="datetime-local"]').value.split('T')[0],
+                    amount_lost: parseFloat(step1.querySelector('input[type="text"]').value.replace(/[^0-9.]/g, '') || 0),
+                    incident_date: step1.querySelector('input[type="datetime-local"]').value.split('T')[0] || new Date().toISOString().split('T')[0],
                     contact_channel: step1.querySelector('select:nth-of-type(2)').value.toLowerCase(),
                     description: step1.querySelector('textarea').value,
                     bank_name: step2.querySelector('input:nth-of-type(1)').value,
@@ -1295,18 +1294,21 @@
                 const formData = new FormData();
                 formData.append('json_data', JSON.stringify(complaintData));
                 
-                // Add files if any
-                // (Assuming a hidden input or just grabbing from the drag-drop area if implemented)
-                // For now, let's just send the JSON
-                
                 const res = await fetch(`${API_BASE}/complaints/submit`, {
                     method: 'POST',
                     body: formData
                 });
                 
-                const result = await res.json();
+                const responseText = await res.text();
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    console.error("Malformed JSON response:", responseText);
+                    throw new Error("The server returned an invalid response. Please try again later.");
+                }
                 
-                if (result.status === 'success' || result.code === 201) {
+                if (res.ok && (result.success || result.status === 'success' || result.code === 201)) {
                     document.getElementById('triage-form').style.display = 'none';
                     document.getElementById('step-indicator').style.display = 'none';
                     
@@ -1314,7 +1316,6 @@
                     successState.style.display = 'block';
                     document.getElementById('gen-case-id').textContent = result.data.case_id;
 
-                    // Animate progress bar with real AI status
                     document.getElementById('success-progress').style.width = '100%';
                     document.getElementById('ai-status').textContent = 'AI Triage Complete! Email Dispatched.';
                     document.getElementById('ai-status').style.color = 'var(--green)';
@@ -1324,13 +1325,13 @@
                         document.querySelector('.prob-badge').textContent = `${prob}% Estimated Freeze Probability — Act Now`;
                     }
                 } else {
-                    alert("Submission failed: " + (result.message || "Unknown error"));
+                    alert("Submission failed: " + (result.message || "Unknown server error"));
                     btn.textContent = originalText;
                     btn.disabled = false;
                 }
             } catch (err) {
                 console.error("Submission error:", err);
-                alert("Failed to connect to server.");
+                alert(err.message || "Failed to connect to server.");
                 btn.textContent = originalText;
                 btn.disabled = false;
             }

@@ -90,10 +90,11 @@ def submit():
 
     # 6. Send Confirmation Email
     if victim_info and victim_info.email:
-        email_service.send_case_confirmation(
-            to_email=victim_info.email,
-            user_name=victim_info.name,
-            case_id=complaint["case_id"]
+        email_service.send_complaint_confirmation(
+            victim_email=victim_info.email,
+            victim_name=victim_info.name,
+            case_id=complaint["case_id"],
+            triage_result=complaint.get("triage_result") or {},
         )
 
     return created({
