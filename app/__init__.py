@@ -87,23 +87,23 @@ def create_app(config_name: str | None = None) -> Flask:
     def health():
         """
         Lightweight liveness probe used by Render and uptime monitors.
-        Returns HTTP 200 with a JSON body so load balancers can confirm the
-        process is alive and the database connection is reachable.
         """
         try:
-            # Ping MongoDB to verify the connection is live.
-            mongo.db.command("ping")
-            db_status = "connected"
-        except Exception as exc:  # pragma: no cover
-            db_status = f"error: {exc}"
+            # Check if mongo.db exists before pinging
+            if mongo.db is not None:
+                mongo.db.command("ping")
+                db_status = "connected"
+            else:
+                db_status = "error: mongo.db is None (check MONGO_URI)"
+        except Exception as exc:
+            db_status = f"error: {str(exc)}"
 
-        return jsonify(
-            {
-                "status": "ok",
-                "service": "traceback-api",
-                "environment": config_name,
-                "database": db_status,
-            }
-        ), 200
+        return jsonify({
+            "status": "ok",
+            "platform": "TraceBack",
+            "database": db_status,
+            "environment": os.environ.get("FLASK_ENV", "development"),
+            "mongo_uri_present": bool(app.config.get("MONGO_URI"))
+        }), 200
 
     return app

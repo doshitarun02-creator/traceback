@@ -25,9 +25,11 @@ class BaseConfig:
     MAX_CONTENT_LENGTH: int = 16 * 1024 * 1024  # 16 MB upload limit
 
     # ── MongoDB Atlas ─────────────────────────────────────────────────────
+    # Flask-PyMongo specifically looks for MONGO_URI.
+    # We read from MONGODB_URI (Render default) or MONGO_URI.
     MONGO_URI: str = os.environ.get(
-        "MONGO_URI",
-        "mongodb://localhost:27017/traceback",
+        "MONGODB_URI", 
+        os.environ.get("MONGO_URI", "mongodb://localhost:27017/traceback")
     )
     # Flask-PyMongo uses MONGO_URI; the db name is embedded in the URI.
     # Atlas URI format:
