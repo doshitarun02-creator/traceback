@@ -1120,7 +1120,7 @@
     <script>
         // 1. Live Counter & Platform Stats
         const counterEl = document.getElementById('live-counter');
-        const API_BASE = '/api';
+        const API_BASE = window.location.origin + '/api';
 
         async function fetchLiveStats() {
             try {
