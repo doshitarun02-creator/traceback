@@ -1270,24 +1270,30 @@
                 const step2 = document.getElementById('step-2');
                 const step3 = document.getElementById('step-3');
 
+                const s1Inputs = step1.querySelectorAll('input');
+                const s1Selects = step1.querySelectorAll('select');
+                const s2Inputs = step2.querySelectorAll('input');
+                const s3Inputs = step3.querySelectorAll('input');
+                const s3Selects = step3.querySelectorAll('select');
+
                 const complaintData = {
-                    fraud_type: step1.querySelector('select').value.toLowerCase().replace(/ /g, '_'),
-                    amount_lost: parseFloat(step1.querySelector('input[type="text"]').value.replace(/[^0-9.]/g, '') || 0),
-                    incident_date: step1.querySelector('input[type="datetime-local"]').value.split('T')[0] || new Date().toISOString().split('T')[0],
-                    contact_channel: step1.querySelector('select:nth-of-type(2)').value.toLowerCase(),
+                    fraud_type: s1Selects[0].value.toLowerCase().replace(/ /g, '_'),
+                    amount_lost: parseFloat(s1Inputs[0].value.replace(/[^0-9.]/g, '') || 0),
+                    incident_date: s1Inputs[1].value.split('T')[0] || new Date().toISOString().split('T')[0],
+                    contact_channel: s1Selects[1].value.toLowerCase(),
                     description: step1.querySelector('textarea').value,
-                    bank_name: step2.querySelector('input:nth-of-type(1)').value,
-                    victim_account: step2.querySelector('input:nth-of-type(2)').value,
-                    fraudster_contact: step2.querySelector('input:nth-of-type(3)').value,
-                    transaction_id: step2.querySelector('input:nth-of-type(4)').value,
-                    state: step3.querySelector('select:nth-of-type(1)').value,
+                    bank_name: s2Inputs[0].value,
+                    victim_account: s2Inputs[1].value,
+                    fraudster_contact: s2Inputs[2].value,
+                    transaction_id: s2Inputs[3].value,
+                    state: s3Selects[0].value,
                     consent_dpdp: document.getElementById('consent').checked,
                     victim: {
-                        name: step3.querySelector('input:nth-of-type(1)').value,
+                        name: s3Inputs[1].value, // s3Inputs[0] is the +91 prefix
                         phone: step3.querySelector('input[type="tel"]').value,
                         email: step3.querySelector('input[type="email"]').value,
-                        state: step3.querySelector('select:nth-of-type(1)').value,
-                        language: step3.querySelector('select:nth-of-type(2)').value
+                        state: s3Selects[0].value,
+                        language: s3Selects[1].value
                     }
                 };
 
