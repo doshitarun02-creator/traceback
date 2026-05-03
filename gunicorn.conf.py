@@ -23,12 +23,11 @@ bind = f"0.0.0.0:{_port}"
 # ── Workers ───────────────────────────────────────────────────────────────────
 
 # Recommended formula: (2 × CPU cores) + 1
-# Render's free/starter instances have 1 vCPU → 3 workers.
-workers = int(os.environ.get("WEB_CONCURRENCY", multiprocessing.cpu_count() * 2 + 1))
+workers = 2
+threads = 4
 
 # Worker class: sync (default) is fine for Flask.
-# Switch to "gevent" or "gthread" if you add async/long-polling routes.
-worker_class = "sync"
+worker_class = "gthread"
 
 # Maximum requests a worker handles before it is gracefully restarted.
 # Prevents slow memory leaks from accumulating indefinitely.
