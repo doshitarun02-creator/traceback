@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TraceBack | Fraud hit you. We trace it back.</title>
+    <meta name="description" content="India's first AI-powered cybercrime recovery platform.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables */
+        :root {
+            --bg: #070b14;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #00c9d4;
+            --accent-hover: #00a4ad;
+            --red: #ef4444;
+            --red-hover: #dc2626;
+            --green: #22c55e;
+            --amber: #f59e0b;
+            --gold: #f0c040;
+            --surface: rgba(255, 255, 255, 0.03);
+            --surface-border: rgba(255, 255, 255, 0.1);
+            --surface-hover: rgba(255, 255, 255, 0.06);
+            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            
+            --font-display: 'Instrument Serif', serif;
+            --font-body: 'Inter', sans-serif;
+            
+            --nav-height: 76px;
+            --container-max: 1160px;
+        }
+
+        [data-theme="light"] {
+            --bg: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --surface: #ffffff;
+            --surface-border: #cbd5e1;
+            --surface-hover: #f8fafc;
+            --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --accent: #009aa2;
+        }
+
+        /* Resets & Base */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        h1, h2, h3, h4, .display-font {
+            font-family: var(--font-display);
+            font-weight: 400;
+            line-height: 1.1;
+        }
+        h1 { font-size: clamp(3rem, 6vw, 5rem); }
+        h2 { font-size: clamp(2.5rem, 5vw, 4rem); }
+        h3 { font-size: clamp(1.5rem, 3vw, 2.5rem); }
+        em { font-style: italic; color: var(--accent); }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        
+        .container { max-width: var(--container-max); margin: 0 auto; padding: 0 1.5rem; }
+        .text-center { text-align: center; }
+        .text-muted { color: var(--text-muted); }
+        
+        /* Typography Scale */
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-base { font-size: 1rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600;
+            font-family: var(--font-body); cursor: pointer; transition: all 0.2s;
+            border: 2px solid transparent; text-align: center;
+        }
+        .btn-primary { background: var(--accent); color: #000; }
+        .btn-primary:hover { background: var(--accent-hover); box-shadow: 0 0 16px rgba(0,201,212,0.4); }
+        .btn-red { background: var(--red); color: #fff; }
+        .btn-red:hover { background: var(--red-hover); box-shadow: 0 0 16px rgba(239,68,68,0.4); }
+        .btn-ghost { background: transparent; border-color: var(--surface-border); color: var(--text-main); }
+        .btn-ghost:hover { background: var(--surface-hover); }
+        .btn-lg { padding: 1rem 2rem; font-size: 1.125rem; }
+        
+        /* Cards & Surfaces */
+        .card {
+            background: var(--surface); border: 2px solid var(--surface-border);
+            border-radius: 1rem; padding: 2rem; box-shadow: var(--card-shadow);
+        }
+        .badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem;
+            font-weight: 600; background: var(--surface); border: 1px solid var(--surface-border);
+        }
+        .pulse-dot {
+            width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+            box-shadow: 0 0 0 0 rgba(0, 201, 212, 0.7); animation: pulse 2s infinite;
+        }
+
+        /* Nav */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; height: var(--nav-height);
+            background: rgba(7, 11, 20, 0.7); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--surface-border); z-index: 1000;
+            display: flex; align-items: center;
+        }
+        [data-theme="light"] .navbar { background: rgba(255, 255, 255, 0.8); }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.5rem; letter-spacing: -0.02em; }
+        .logo svg { width: 32px; height: 32px; fill: none; stroke: var(--accent); stroke-width: 2; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { font-weight: 500; font-size: 0.95rem; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--accent); }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
+        .theme-toggle { background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 1.25rem; }
+        .hamburger { display: none; background: none; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer; }
+        
+        /* Mobile Nav */
+        .mobile-nav-overlay {
+            position: fixed; inset: 0; background: var(--bg); z-index: 999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .mobile-nav-overlay.active { opacity: 1; pointer-events: all; }
+        .mobile-nav-overlay a { font-size: 2rem; font-family: var(--font-display); margin: 1rem 0; }
+
+        /* Ticker */
+        .ticker-wrap {
+            margin-top: var(--nav-height); background: linear-gradient(90deg, #ef4444 0%, #991b1b 100%);
+            color: #fff; padding: 0.5rem 0; overflow: hidden; display: flex; white-space: nowrap;
+        }
+        .ticker { display: flex; animation: ticker 40s linear infinite; }
+        .ticker-item { padding: 0 2rem; font-weight: 500; font-size: 0.9rem; display: flex; align-items: center; gap: 1rem; }
+        .ticker-item::after { content: "•"; color: rgba(255,255,255,0.5); }
+
+        /* Sections */
+        section { padding: 6rem 0; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .eyebrow { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; display: block; }
+        
+        /* Hero Section */
+        .hero { min-height: calc(100vh - var(--nav-height)); display: flex; align-items: center; padding: 4rem 0; }
+        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .hero-text .badge { margin-bottom: 2rem; }
+        .hero-text h1 { margin-bottom: 1.5rem; background: linear-gradient(135deg, #fff 0%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        [data-theme="light"] .hero-text h1 { background: linear-gradient(135deg, #0f172a 0%, #475569 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-text p { font-size: 1.125rem; color: var(--text-muted); margin-bottom: 2.5rem; max-width: 540px; }
+        .hero-ctas { display: flex; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .live-counter-box { padding: 1rem; background: rgba(239, 68, 68, 0.1); border-left: 4px solid var(--red); border-radius: 0 0.5rem 0.5rem 0; }
+        .hero-stats { display: flex; gap: 2rem; margin-top: 2rem; border-top: 1px solid var(--surface-border); padding-top: 2rem; }
+        .stat-item h4 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+        .stat-item p { font-size: 0.875rem; color: var(--text-muted); }
+
+        /* Hero Card */
+        .mock-card { border-color: var(--accent); position: relative; overflow: hidden; }
+        .mock-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent); }
+        .mc-header { display: flex; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid var(--surface-border); padding-bottom: 1rem; }
+        .mc-status { color: var(--green); display: flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.875rem; }
+        .mc-status .dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+        .mc-amount { font-size: 2.5rem; font-family: var(--font-display); margin-bottom: 0.5rem; }
+        .mc-type { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.5rem; }
+        .mc-progress { background: var(--surface-border); height: 8px; border-radius: 4px; margin-bottom: 0.5rem; overflow: hidden; }
+        .mc-progress-bar { background: var(--accent); width: 72%; height: 100%; border-radius: 4px; }
+        .mc-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; margin-top: 1rem; }
+        .mc-tag { background: rgba(255,255,255,0.05); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; border: 1px solid var(--surface-border); }
+        .mc-checklist { margin-bottom: 2rem; }
+        .mc-checklist li { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; font-size: 0.9rem; align-items: center; }
+        .mc-expert { display: flex; align-items: center; gap: 1rem; background: var(--surface-hover); padding: 1rem; border-radius: 0.5rem; }
+        .avatar { width: 40px; height: 40px; background: var(--accent); color: #000; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; }
+        .expert-info p { margin: 0; font-size: 0.9rem; font-weight: 600; }
+        .expert-info span { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* Crisis Section */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 4rem; }
+        .stat-card { text-align: center; padding: 2rem 1rem; }
+        .stat-card h3 { font-size: 2.5rem; color: var(--red); margin-bottom: 0.5rem; }
+        .stat-card p { font-weight: 600; margin-bottom: 0.25rem; }
+        .stat-card span { font-size: 0.875rem; color: var(--text-muted); }
+        
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+        .chart-box h4 { margin-bottom: 1.5rem; font-family: var(--font-body); font-weight: 600; }
+        .bar-wrap { margin-bottom: 1rem; }
+        .bar-label { display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 0.25rem; }
+        .bar-bg { background: var(--surface-border); height: 12px; border-radius: 6px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 6px; }
+        
+        .ranked-list li { display: flex; justify-content: space-between; padding: 1rem; border-bottom: 1px solid var(--surface-border); align-items: center; }
+        .ranked-list li:first-child { background: rgba(239, 68, 68, 0.1); border-left: 3px solid var(--red); }
+        .rank-num { font-weight: bold; color: var(--text-muted); margin-right: 1rem; width: 20px; display: inline-block; }
+
+        /* Intake Form Section */
+        #report { background: var(--surface-hover); }
+        .form-container { max-width: 700px; margin: 0 auto; position: relative; }
+        .form-urgency { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--red); color: #fff; padding: 1rem; text-align: center; border-radius: 0.5rem; margin-bottom: 2rem; font-weight: 600; }
+        [data-theme="light"] .form-urgency { color: var(--red); }
+        .step-indicator { display: flex; justify-content: space-between; margin-bottom: 2rem; position: relative; }
+        .step-indicator::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: var(--surface-border); z-index: 1; transform: translateY(-50%); }
+        .step-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--surface); border: 2px solid var(--surface-border); display: flex; align-items: center; justify-content: center; z-index: 2; position: relative; font-weight: bold; transition: all 0.3s; }
+        .step-dot.active { background: var(--accent); border-color: var(--accent); color: #000; }
+        .step-dot.completed { background: var(--green); border-color: var(--green); color: #000; }
+        
+        .form-step { display: none; animation: fadeIn 0.4s ease; }
+        .form-step.active { display: block; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem; }
+        .form-group label span.req { color: var(--red); }
+        .form-group label.critical { color: var(--red); font-weight: 600; }
+        .form-control { width: 100%; padding: 0.875rem; background: var(--bg); border: 1px solid var(--surface-border); border-radius: 0.5rem; color: var(--text-main); font-family: var(--font-body); font-size: 1rem; transition: border-color 0.2s; }
+        .form-control:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,201,212,0.1); }
+        select.form-control { appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 1rem top 50%; background-size: 0.65rem auto; }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+        .file-drop { border: 2px dashed var(--surface-border); border-radius: 0.5rem; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.2s; background: rgba(0,0,0,0.2); }
+        .file-drop:hover { border-color: var(--accent); background: rgba(0,201,212,0.05); }
+        .checkbox-group { display: flex; gap: 1rem; align-items: flex-start; }
+        .checkbox-group input { margin-top: 0.3rem; width: 1.2rem; height: 1.2rem; accent-color: var(--accent); }
+        .checkbox-group label { font-size: 0.85rem; color: var(--text-muted); font-weight: normal; }
+        
+        .form-actions { display: flex; justify-content: space-between; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--surface-border); }
+        .input-hint { display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+        .success-state { display: none; text-align: center; padding: 3rem 1rem; animation: fadeIn 0.5s ease; }
+        .success-icon { width: 64px; height: 64px; background: rgba(34, 197, 94, 0.1); color: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1.5rem; }
+        .mock-progress { height: 6px; background: var(--surface-border); border-radius: 3px; margin: 2rem 0; overflow: hidden; position: relative; }
+        .mock-progress-bar { width: 0%; height: 100%; background: var(--accent); transition: width 3s ease-in-out; }
+        .prob-badge { display: inline-block; background: rgba(245, 158, 11, 0.1); border: 1px solid var(--amber); color: var(--amber); padding: 0.5rem 1rem; border-radius: 2rem; font-weight: 600; margin-top: 1rem; }
+
+        /* Competitor Gap */
+        .gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .gap-card { padding: 2.5rem; border-radius: 1rem; border: 2px solid var(--surface-border); }
+        .gap-card.competitor { opacity: 0.8; background: rgba(255,255,255,0.02); }
+        .gap-card.traceback { background: var(--surface); border-color: var(--accent); box-shadow: 0 0 30px rgba(0,201,212,0.1); position: relative; overflow: hidden; }
+        .gap-card h3 { margin-bottom: 2rem; font-family: var(--font-body); font-weight: 600; }
+        .gap-list li { margin-bottom: 1.25rem; display: flex; gap: 1rem; align-items: flex-start; }
+        .gap-list.bad li::before { content: "❌"; }
+        .gap-list.good li::before { content: "✅"; }
+
+        /* How It Works */
+        .flow-container { display: flex; justify-content: space-between; position: relative; margin-top: 4rem; flex-wrap: wrap; gap: 2rem; }
+        .flow-line { position: absolute; top: 24px; left: 0; right: 0; height: 2px; background: var(--surface-border); z-index: 1; transform: translateY(-50%); }
+        @media (max-width: 900px) { .flow-line { display: none; } }
+        .step-card { flex: 1; min-width: 200px; position: relative; z-index: 2; }
+        .step-num { width: 48px; height: 48px; background: var(--bg); border: 2px solid var(--accent); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1.5rem; }
+        .step-card h4 { margin-bottom: 1rem; font-family: var(--font-body); font-weight: 600; }
+        .step-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* Pricing Tiers */
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; align-items: start; }
+        .tier-card { display: flex; flex-direction: column; height: 100%; position: relative; }
+        .tier-card.popular { border-color: var(--accent); transform: scale(1.05); z-index: 10; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5); }
+        .popular-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 0.25rem 1rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .tier-header { border-bottom: 1px solid var(--surface-border); padding-bottom: 1.5rem; margin-bottom: 1.5rem; }
+        .tier-name { font-family: var(--font-display); font-size: 2rem; margin-bottom: 0.5rem; }
+        .tier-price { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .tier-target { font-size: 0.875rem; color: var(--text-muted); }
+        .tier-features { flex-grow: 1; margin-bottom: 2rem; }
+        .tier-features li { display: flex; gap: 0.75rem; margin-bottom: 1rem; font-size: 0.9rem; }
+        .tier-features li.yes::before { content: "✅"; }
+        .tier-features li.no { color: var(--text-muted); opacity: 0.5; }
+        .tier-features li.no::before { content: "✗"; }
+        .tier-card .btn { width: 100%; }
+
+        /* Legal & Experts Grid */
+        .grid-3x2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .legal-card h4 { font-family: var(--font-body); font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .legal-card p { font-size: 0.9rem; color: var(--text-muted); }
+        .icon-green { color: var(--green); }
+        .icon-cyan { color: var(--accent); }
+        .icon-gold { color: var(--gold); }
+        .icon-amber { color: var(--amber); }
+        .icon-blue { color: #3b82f6; }
+
+        .expert-card .avatar { width: 64px; height: 64px; font-size: 1.5rem; margin-bottom: 1rem; }
+        .expert-card h4 { margin-bottom: 0.25rem; font-family: var(--font-body); font-weight: 600; }
+        .expert-title { color: var(--accent); font-size: 0.875rem; margin-bottom: 1rem; display: block; }
+        .expert-skills { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.4; border-top: 1px solid var(--surface-border); padding-top: 1rem; }
+        .expert-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.875rem; font-weight: 600; }
+
+        .expert-cta { margin-top: 3rem; background: var(--surface-hover); border-radius: 1rem; padding: 2rem; text-align: center; border: 1px dashed var(--surface-border); }
+
+        /* Business Model */
+        .bm-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 3rem; }
+        .bm-card h4 { font-family: var(--font-body); font-weight: 600; margin-bottom: 0.5rem; }
+        .bm-card p { font-size: 0.875rem; color: var(--text-muted); }
+        
+        .ins-table-wrapper { overflow-x: auto; }
+        .ins-table { width: 100%; border-collapse: collapse; text-align: left; background: var(--surface); border-radius: 1rem; overflow: hidden; border: 1px solid var(--surface-border); }
+        .ins-table th, .ins-table td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--surface-border); }
+        .ins-table th { background: rgba(255,255,255,0.05); font-weight: 600; }
+        .ins-table tr:last-child td { border-bottom: none; }
+
+        /* Trust Bar */
+        .trust-bar { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; padding: 4rem 0; border-top: 1px solid var(--surface-border); border-bottom: 1px solid var(--surface-border); font-weight: 500; font-size: 1.1rem; }
+        
+        /* Final CTA */
+        .final-cta { text-align: center; padding: 8rem 0; }
+        .final-cta h2 { margin: 1.5rem 0; }
+        .final-cta p { font-size: 1.25rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 3rem; }
+        .final-cta .fine-print { font-size: 0.75rem; color: var(--text-muted); margin-top: 2rem; display: block; }
+
+        /* Footer */
+        footer { border-top: 1px solid var(--surface-border); padding: 4rem 0 2rem; background: #000; }
+        [data-theme="light"] footer { background: #e2e8f0; }
+        .footer-grid { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem; margin-bottom: 3rem; }
+        .footer-brand p { margin-top: 0.5rem; color: var(--text-muted); font-size: 0.875rem; }
+        .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-muted); font-size: 0.9rem; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent); }
+        .footer-bottom { border-top: 1px solid var(--surface-border); padding-top: 2rem; display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); flex-wrap: wrap; gap: 1rem; }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 201, 212, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 201, 212, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 201, 212, 0); }
+        }
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Halved because duplicated content */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Scroll Reveal - Progressive Enhancement */
+        @supports (animation-timeline: view()) {
+            .reveal {
+                animation: fade-in-up linear forwards;
+                animation-timeline: view();
+                animation-range: entry 10% cover 25%;
+                opacity: 0;
+            }
+            @keyframes fade-in-up {
+                0% { opacity: 0; transform: translateY(50px); }
+                100% { opacity: 1; transform: translateY(0); }
+            }
+        }
+
+        /* Expert Filters */
+        .filter-tabs { display: flex; gap: 1rem; margin-bottom: 2rem; justify-content: center; flex-wrap: wrap; }
+        .filter-tab { padding: 0.5rem 1.25rem; border-radius: 2rem; background: var(--surface); border: 1px solid var(--surface-border); color: var(--text-muted); cursor: pointer; transition: all 0.2s; font-weight: 600; }
+        .filter-tab:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-tab.active { background: var(--accent); border-color: var(--accent); color: #000; }
+
+        /* Media Queries */
+        /* Expert Filters */
+        .filter-tabs { display: flex; gap: 1rem; margin-bottom: 2rem; justify-content: center; flex-wrap: wrap; }
+        .filter-tab { padding: 0.5rem 1.25rem; border-radius: 2rem; background: var(--surface); border: 1px solid var(--surface-border); color: var(--text-muted); cursor: pointer; transition: all 0.2s; font-weight: 600; }
+        .filter-tab:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-tab.active { background: var(--accent); border-color: var(--accent); color: #000; }
+
+        @media (max-width: 1024px) {
+            .hero-grid, .gap-grid { grid-template-columns: 1fr; }
+            .hero-text { text-align: center; }
+            .hero-text p { margin: 0 auto 2.5rem; }
+            .hero-ctas { justify-content: center; }
+            .hero-stats { justify-content: center; }
+            .stats-grid, .bm-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
+            .tier-card.popular { transform: none; }
+            .grid-3x2 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .nav-links, .nav-actions .btn { display: none; }
+            .hamburger { display: block; }
+            .data-grid { grid-template-columns: 1fr; }
+            .grid-3x2 { grid-template-columns: 1fr; }
+            .stats-grid, .bm-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2.5rem; }
+            .trust-bar { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .form-actions { flex-direction: column; gap: 1rem; }
+            .form-actions .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. NAV -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="M14 12h-4m0 0l2-2m-2 2l2 2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                TraceBack
+            </a>
+            <div class="nav-links">
+                <a href="#crisis">Crisis</a>
+                <a href="#how-it-works">Process</a>
+                <a href="#tiers">Pricing</a>
+                <a href="#legal">Legal</a>
+                <a href="#experts">Experts</a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-btn" aria-label="Toggle theme">☀️</button>
+                <a href="#report" class="btn btn-red">Report Fraud Now</a>
+                <button class="hamburger" id="mobile-menu-btn" aria-label="Open menu">☰</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav-overlay" id="mobile-nav">
+        <button class="theme-toggle" id="mobile-theme-btn" style="position: absolute; top: 2rem; right: 2rem;">☀️</button>
+        <button class="hamburger" id="close-menu-btn" style="position: absolute; top: 2rem; left: 2rem;">✕</button>
+        <a href="#crisis" class="mobile-link">Crisis</a>
+        <a href="#how-it-works" class="mobile-link">Process</a>
+        <a href="#tiers" class="mobile-link">Pricing</a>
+        <a href="#legal" class="mobile-link">Legal</a>
+        <a href="#experts" class="mobile-link">Experts</a>
+        <a href="#report" class="btn btn-red btn-lg mobile-link" style="margin-top: 2rem;">Report Fraud Now</a>
+    </div>
+
+    <!-- 2. LIVE TICKER -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <!-- Content duplicated for seamless infinite scroll -->
+            <div class="ticker-item">LIVE: 88,976 cybercrime complaints filed in India today</div>
+            <div class="ticker-item">₹22,495 Crore lost in 2025 — 1 complaint every second</div>
+            <div class="ticker-item">Only 40.9% of fraud funds are recovered — act in the Golden Hour</div>
+            <div class="ticker-item">Maharashtra: ₹3,203 Cr lost | Karnataka: ₹2,413 Cr | Tamil Nadu: ₹1,897 Cr</div>
+            <div class="ticker-item">Investment scams = 76% of all financial losses in India</div>
+            <div class="ticker-item">TraceBack structures your data to match I4C's API — faster freezes</div>
+            <!-- Duplicate -->
+            <div class="ticker-item">LIVE: 88,976 cybercrime complaints filed in India today</div>
+            <div class="ticker-item">₹22,495 Crore lost in 2025 — 1 complaint every second</div>
+            <div class="ticker-item">Only 40.9% of fraud funds are recovered — act in the Golden Hour</div>
+            <div class="ticker-item">Maharashtra: ₹3,203 Cr lost | Karnataka: ₹2,413 Cr | Tamil Nadu: ₹1,897 Cr</div>
+            <div class="ticker-item">Investment scams = 76% of all financial losses in India</div>
+            <div class="ticker-item">TraceBack structures your data to match I4C's API — faster freezes</div>
+        </div>
+    </div>
+
+    <!-- 3. HERO SECTION -->
+    <section class="hero container">
+        <div class="hero-grid">
+            <div class="hero-text reveal">
+                <div class="badge">
+                    <div class="pulse-dot"></div>
+                    India's First Expert-Led Cybercrime Recovery Platform
+                </div>
+                <h1>Fraud hit you.<br><em>We trace it back.</em></h1>
+                <p>Register your complaint, get AI triage in 60 seconds, and work with verified CEH/CHFI experts who structure your case to match the I4C's API — maximising your fund freeze chances before the Golden Hour closes.</p>
+                <div class="hero-ctas">
+                    <a href="#report" class="btn btn-red btn-lg">Report Fraud — Free Triage</a>
+                    <a href="#how-it-works" class="btn btn-ghost btn-lg">How It Works</a>
+                </div>
+                <div class="live-counter-box">
+                    <strong style="color:var(--red); font-size: 1.25rem;"><span id="live-counter">88,976</span></strong> complaints filed in India today
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <h4>3.24 Cr</h4>
+                        <p>Complaints</p>
+                    </div>
+                    <div class="stat-item">
+                        <h4>₹22,495 Cr</h4>
+                        <p>Total Losses</p>
+                    </div>
+                    <div class="stat-item">
+                        <h4>40.9%</h4>
+                        <p>Govt Recovery Rate</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-card-wrapper reveal">
+                <div class="card mock-card">
+                    <div class="mc-header">
+                        <div class="text-sm text-muted">Case ID: TB-2026-04821</div>
+                        <div class="mc-status"><div class="dot"></div> Active</div>
+                    </div>
+                    <div class="mc-amount">₹6,40,000</div>
+                    <div class="mc-type">Investment Scam — Fake Trading App (Telegram)</div>
+                    <div class="mc-progress">
+                        <div class="mc-progress-bar"></div>
+                    </div>
+                    <div class="text-xs text-muted" style="text-align: right;">Recovery Progress: 72%</div>
+                    
+                    <div class="mc-tags">
+                        <span class="mc-tag">NCRP Filed</span>
+                        <span class="mc-tag">Bank Freeze Requested</span>
+                        <span class="mc-tag" style="color:var(--green); border-color:var(--green);">₹3.8L Held</span>
+                    </div>
+
+                    <ul class="mc-checklist text-muted">
+                        <li>✅ 1930 Complaint — Filed</li>
+                        <li>✅ I4C API Data — Structured</li>
+                        <li>✅ Bank Freeze — Active</li>
+                        <li>⚠️ FIR Draft — In Review</li>
+                        <li>◎ Funds Held — ₹3,80,000</li>
+                    </ul>
+
+                    <div class="mc-expert">
+                        <div class="avatar">AK</div>
+                        <div class="expert-info">
+                            <p>Aditya Kumar, CHFI <span class="badge" style="padding:2px 6px; font-size:10px; margin-left:8px; border-color:var(--green); color:var(--green);">Online</span></p>
+                            <span>Investment Fraud Specialist</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. CRISIS DATA SECTION -->
+    <section id="crisis" class="container">
+        <div class="section-header reveal">
+            <span class="eyebrow">The Scale of the Crisis — I4C Data 2025</span>
+            <h2>India's cybercrime crisis is <em>accelerating</em></h2>
+        </div>
+
+        <div class="stats-grid reveal">
+            <div class="card stat-card">
+                <h3>3.24 Cr</h3>
+                <p>Complaints in 2025</p>
+                <span>↑46.4% from 2024</span>
+            </div>
+            <div class="card stat-card">
+                <h3>₹22,495 Cr</h3>
+                <p>Financial losses 2025</p>
+                <span>= $2.7 Billion USD</span>
+            </div>
+            <div class="card stat-card">
+                <h3>88,976</h3>
+                <p>Daily complaints avg.</p>
+                <span>1 every single second</span>
+            </div>
+            <div class="card stat-card">
+                <h3 style="color:var(--text-muted);">59.1%</h3>
+                <p>Funds never recovered</p>
+                <span>₹13,306 Cr unrecoverable</span>
+            </div>
+        </div>
+
+        <div class="data-grid reveal">
+            <div class="card chart-box">
+                <h4>Fraud by Financial Loss (I4C 2025)</h4>
+                
+                <div class="bar-wrap">
+                    <div class="bar-label"><span>Investment Scams</span> <span>76%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 76%; background: var(--red);"></div></div>
+                </div>
+                <div class="bar-wrap">
+                    <div class="bar-label"><span>Digital Arrest Scams</span> <span>9%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 9%; background: var(--amber);"></div></div>
+                </div>
+                <div class="bar-wrap">
+                    <div class="bar-label"><span>Credit Card Fraud</span> <span>7%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 7%; background: var(--accent);"></div></div>
+                </div>
+                <div class="bar-wrap">
+                    <div class="bar-label"><span>Sextortion</span> <span>4%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 4%; background: #a855f7;"></div></div>
+                </div>
+                <div class="bar-wrap">
+                    <div class="bar-label"><span>E-Commerce Fraud</span> <span>3%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 3%; background: var(--green);"></div></div>
+                </div>
+                <div class="bar-wrap">
+                    <div class="bar-label"><span>Malware/App Fraud</span> <span>1%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 1%; background: var(--text-muted);"></div></div>
+                </div>
+            </div>
+
+            <div class="card chart-box">
+                <h4>Top States by Loss 2025</h4>
+                <ul class="ranked-list">
+                    <li><div><span class="rank-num">1</span> Maharashtra</div> <div><span style="color:var(--red); font-weight:600;">₹3,203 Cr</span> <span class="text-xs text-muted d-block">| 28.33L complaints</span></div></li>
+                    <li><div><span class="rank-num">2</span> Karnataka</div> <div><span style="font-weight:600;">₹2,413 Cr</span> <span class="text-xs text-muted">| 21.32L complaints</span></div></li>
+                    <li><div><span class="rank-num">3</span> Tamil Nadu</div> <div><span style="font-weight:600;">₹1,897 Cr</span> <span class="text-xs text-muted">| 12.32L complaints</span></div></li>
+                    <li><div><span class="rank-num">4</span> Uttar Pradesh</div> <div><span style="font-weight:600;">₹1,443 Cr</span> <span class="text-xs text-muted">| 27.52L complaints</span></div></li>
+                    <li><div><span class="rank-num">5</span> Delhi</div> <div><span style="font-weight:600;">₹1,200 Cr</span> <span class="text-xs text-muted">| 18.4L complaints</span></div></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. COMPLAINT INTAKE FORM -->
+    <section id="report">
+        <div class="container form-container reveal">
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <h2>Report Your Fraud</h2>
+                <p class="text-muted text-lg">Every second counts. Fill this in 90 seconds.</p>
+            </div>
+
+            <div class="form-urgency">
+                ⚡ Golden Hour Active — Act Now. The faster you report, the higher your freeze probability.
+            </div>
+
+            <div class="card" id="intake-form-card">
+                <div class="step-indicator" id="step-indicator">
+                    <div class="step-dot active" data-step="1">1</div>
+                    <div class="step-dot" data-step="2">2</div>
+                    <div class="step-dot" data-step="3">3</div>
+                </div>
+
+                <form id="triage-form" onsubmit="return false;">
+                    
+                    <!-- STEP 1 -->
+                    <div class="form-step active" id="step-1">
+                        <h3 style="margin-bottom: 1.5rem; font-family: var(--font-body); font-weight:600;">What happened?</h3>
+                        
+                        <div class="form-group">
+                            <label>Fraud Type <span class="req">*</span></label>
+                            <select class="form-control" required>
+                                <option value="" disabled selected>Select fraud category</option>
+                                <option>Investment Scam</option>
+                                <option>Digital Arrest</option>
+                                <option>UPI/Banking Fraud</option>
+                                <option>Credit Card Fraud</option>
+                                <option>Sextortion</option>
+                                <option>E-Commerce Fraud</option>
+                                <option>Malware/App</option>
+                                <option>Romance Scam</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Amount Lost <span class="req">*</span></label>
+                            <input type="text" class="form-control" placeholder="₹ Enter amount (e.g., 50,000)" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>When did it happen? <span class="req">*</span></label>
+                            <input type="datetime-local" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Platform used by fraudster <span class="req">*</span></label>
+                            <select class="form-control" required>
+                                <option value="" disabled selected>Select platform</option>
+                                <option>WhatsApp</option>
+                                <option>Telegram</option>
+                                <option>Phone Call</option>
+                                <option>Instagram</option>
+                                <option>Fake Website</option>
+                                <option>Trading App</option>
+                                <option>Email</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Brief description</label>
+                            <textarea class="form-control" placeholder="Describe how the fraud occurred..."></textarea>
+                            <span class="input-hint">Minimum 50 words recommended for accurate AI analysis.</span>
+                        </div>
+
+                        <div class="form-actions" style="justify-content: flex-end;">
+                            <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next Step →</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2 -->
+                    <div class="form-step" id="step-2">
+                        <h3 style="margin-bottom: 1.5rem; font-family: var(--font-body); font-weight:600;">Transaction Details</h3>
+
+                        <div class="form-group">
+                            <label>Your Bank Name <span class="req">*</span></label>
+                            <input type="text" class="form-control" placeholder="e.g., HDFC Bank, SBI">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Your Account / UPI ID</label>
+                            <input type="text" class="form-control" placeholder="Where did funds leave from?">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="critical">Fraudster's UPI ID / Account Number <span class="req">*</span></label>
+                            <input type="text" class="form-control" style="border-color: rgba(239, 68, 68, 0.5);" placeholder="Critical for freezing funds">
+                            <span class="input-hint" style="color: var(--red);">Most critical field. Double check accuracy.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Transaction ID / Reference Number</label>
+                            <input type="text" class="form-control" placeholder="e.g., UTR / IMPS ref number">
+                            <span class="input-hint">Find this in your bank SMS or app statement.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Amount per transaction</label>
+                            <input type="text" class="form-control" placeholder="If multiple, enter total or list comma separated">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Upload evidence</label>
+                            <div class="file-drop">
+                                <span style="font-size: 2rem; display: block; margin-bottom: 1rem;">📄</span>
+                                <strong>Drag & Drop files here</strong><br>
+                                <span class="text-xs text-muted">or click to browse (Images, PDFs, Screenshots)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-ghost" onclick="prevStep(1)">← Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(3)">Next Step →</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3 -->
+                    <div class="form-step" id="step-3">
+                        <h3 style="margin-bottom: 1.5rem; font-family: var(--font-body); font-weight:600;">Your Contact</h3>
+
+                        <div class="form-group">
+                            <label>Full Name <span class="req">*</span></label>
+                            <input type="text" class="form-control" placeholder="As per official ID" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Phone Number <span class="req">*</span></label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="text" class="form-control" value="+91" style="width: 70px; text-align: center;" disabled>
+                                <input type="tel" class="form-control" placeholder="10-digit number" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email Address <span class="req">*</span></label>
+                            <input type="email" class="form-control" placeholder="For triage report delivery" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>State <span class="req">*</span></label>
+                            <select class="form-control" required>
+                                <option value="" disabled selected>Select State</option>
+                                <option>Maharashtra</option>
+                                <option>Karnataka</option>
+                                <option>Delhi</option>
+                                <option>Tamil Nadu</option>
+                                <option>Uttar Pradesh</option>
+                                <option>Other State</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Language Preference</label>
+                            <select class="form-control">
+                                <option>English</option>
+                                <option>Hindi</option>
+                                <option>Marathi</option>
+                                <option>Tamil</option>
+                                <option>Telugu</option>
+                                <option>Bengali</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group checkbox-group" style="margin-top: 1.5rem; padding: 1rem; background: var(--surface-hover); border-radius: 0.5rem; border: 1px solid var(--surface-border);">
+                            <input type="checkbox" id="consent" required>
+                            <label for="consent">I consent to TraceBack processing my data under DPDP Act 2023 to assist in my case recovery. I understand this is a private advisory platform, not affiliated with any government body.</label>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-ghost" onclick="prevStep(2)">← Back</button>
+                            <button type="button" class="btn btn-red btn-lg" onclick="submitForm()">Get My Free AI Triage →</button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- SUCCESS STATE -->
+                <div class="success-state" id="form-success">
+                    <div class="success-icon">✓</div>
+                    <h3 style="font-family: var(--font-body); margin-bottom: 0.5rem;">Complaint Secured</h3>
+                    <p class="text-muted">Case ID generated: <strong id="gen-case-id" style="color: var(--text-main);">TB-2026-XXXXX</strong></p>
+                    
+                    <div style="text-align: left; margin-top: 2rem;">
+                        <span class="text-sm font-weight-bold" id="ai-status">AI Triage in Progress...</span>
+                        <div class="mock-progress">
+                            <div class="mock-progress-bar" id="success-progress"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="prob-badge">74% Estimated Freeze Probability — Act within 2 hours</div>
+                    <p style="margin-top: 2rem; font-size: 0.9rem;">Check your email in 10 minutes for your comprehensive triage report and emergency action checklist.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. COMPETITOR GAP SECTION -->
+    <section id="problem" class="container">
+        <div class="section-header reveal">
+            <span class="eyebrow">The Market Gap</span>
+            <h2>The market is <em>completely broken</em></h2>
+        </div>
+
+        <div class="gap-grid reveal">
+            <div class="gap-card competitor">
+                <h3>Existing Market (Cyber Privilege)</h3>
+                <ul class="gap-list bad">
+                    <li>₹45,000 mandatory upfront — non-refundable</li>
+                    <li>"No Warranty, No Guarantee, No Refund" policy</li>
+                    <li>No AI triage or instant guidance</li>
+                    <li>No real-time case tracking</li>
+                    <li>Unaffordable for middle-class victims</li>
+                    <li>No regional language support</li>
+                </ul>
+            </div>
+            
+            <div class="gap-card traceback">
+                <h3>TraceBack</h3>
+                <ul class="gap-list good">
+                    <li>Free AI triage for every complaint</li>
+                    <li>Pay only for expert time + success fee on recovery</li>
+                    <li>I4C API-structured intake data</li>
+                    <li>Real-time case tracking dashboard</li>
+                    <li>Hindi, Marathi, Tamil, Telugu support</li>
+                    <li>Court-ready digital evidence workflows</li>
+                    <li>DPDP Act 2023 compliant</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. HOW IT WORKS -->
+    <section id="how-it-works" class="container">
+        <div class="section-header reveal">
+            <span class="eyebrow">Recovery Process</span>
+            <h2>Four steps to <em>reclaim your funds</em></h2>
+        </div>
+
+        <div class="flow-container reveal">
+            <div class="flow-line"></div>
+            
+            <div class="step-card">
+                <div class="step-num">01</div>
+                <h4>Register Complaint</h4>
+                <p>Upload evidence, transaction IDs, timelines in our structured online form.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">02</div>
+                <h4>AI Triage</h4>
+                <p>Fraud type detection, urgency score, and first-action checklist generated in under 60 seconds.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">03</div>
+                <h4>Expert Consultation</h4>
+                <p>Matched to CEH/CHFI experts for FIR drafting, bank escalation, and evidence preparation.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">04</div>
+                <h4>Track Recovery</h4>
+                <p>Live dashboard for complaint status updates, freeze progress, and next legal steps.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. PRICING TIERS -->
+    <section id="tiers" class="container">
+        <div class="section-header reveal">
+            <span class="eyebrow">Transparent Pricing</span>
+            <h2>Fair fees, aligned with <em>your success</em></h2>
+        </div>
+
+        <div class="pricing-grid reveal">
+            <!-- Free Tier -->
+            <div class="card tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">SAATHI</div>
+                    <div class="tier-price">Free</div>
+                    <div class="tier-target">For fraud amounts up to ₹50,000</div>
+                </div>
+                <ul class="tier-features">
+                    <li class="yes">Complaint intake + AI triage</li>
+                    <li class="yes">1930 and NCRP guidance</li>
+                    <li class="yes">Bank dispute letter templates</li>
+                    <li class="yes">Regional language support</li>
+                    <li class="yes">Emergency action checklist</li>
+                    <li class="no">Expert consultation</li>
+                    <li class="no">FIR drafting assistance</li>
+                </ul>
+                <a href="#report" class="btn btn-ghost">Start Free</a>
+            </div>
+
+            <!-- Pro Tier -->
+            <div class="card tier-card popular">
+                <div class="popular-badge">Most Popular</div>
+                <div class="tier-header">
+                    <div class="tier-name" style="color: var(--accent);">RAKSHAK</div>
+                    <div class="tier-price">₹1,999</div>
+                    <div class="tier-target">For fraud ₹50,000 – ₹10 Lakh</div>
+                </div>
+                <ul class="tier-features">
+                    <li class="yes">Everything in Saathi</li>
+                    <li class="yes">2 expert video sessions (CEH/CHFI)</li>
+                    <li class="yes">BNSS §173 FIR draft assistance</li>
+                    <li class="yes">RBI escalation notice drafting</li>
+                    <li class="yes">I4C API-structured case data</li>
+                    <li class="yes">Case tracking dashboard</li>
+                    <li class="yes">30-day case support</li>
+                </ul>
+                <a href="#report" class="btn btn-primary">Choose Rakshak</a>
+            </div>
+
+            <!-- Enterprise Tier -->
+            <div class="card tier-card">
+                <div class="tier-header">
+                    <div class="tier-name">NYAYAPATH</div>
+                    <div class="tier-price">₹24,999 <span style="font-size:1rem; font-weight:normal; color:var(--text-muted);">+ Fee</span></div>
+                    <div class="tier-target">For fraud ₹10 Lakh+ (5-10% success fee)</div>
+                </div>
+                <ul class="tier-features">
+                    <li class="yes">Full device forensics (Cellebrite)</li>
+                    <li class="yes">Court-admissible evidence (BSA §63)</li>
+                    <li class="yes">Dedicated case manager</li>
+                    <li class="yes">Blockchain/crypto tracing</li>
+                    <li class="yes">Banking ombudsman escalation</li>
+                    <li class="yes">Success-aligned engagement</li>
+                    <li class="yes">Unlimited expert access</li>
+                </ul>
+                <a href="mailto:contact@traceback.in" class="btn btn-ghost">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. LEGAL FOUNDATION -->
+    <section id="legal" class="container" style="background: var(--surface-hover); border-radius: 2rem; padding: 4rem; margin: 4rem auto;">
+        <div class="section-header reveal" style="margin-bottom: 3rem;">
+            <span class="eyebrow">Regulatory Compliance</span>
+            <h2>Built on solid <em>legal foundations</em></h2>
+        </div>
+
+        <div class="grid-3x2 reveal">
+            <div class="card legal-card">
+                <h4><span class="icon-green">§</span> BNSS 2023 §173</h4>
+                <p>Support for Zero FIR and electronic FIR (e-FIR) filing ensuring jurisdiction-free reporting.</p>
+            </div>
+            <div class="card legal-card">
+                <h4><span class="icon-cyan">⚖️</span> BSA 2023 §63(4)</h4>
+                <p>All digital evidence extracted by our experts is formatted for court-admissibility under the Bharatiya Sakshya Adhiniyam.</p>
+            </div>
+            <div class="card legal-card">
+                <h4><span class="icon-gold">🛡️</span> DPDP Act 2023</h4>
+                <p>Strict Data Fiduciary Model. Consent-first architecture ensures victim data is protected and never sold.</p>
+            </div>
+            <div class="card legal-card">
+                <h4><span class="icon-amber">🏦</span> RBI Zero Liability</h4>
+                <p>Leveraging RBI circulars for 3-day reporting windows to establish zero liability and force shadow reversals.</p>
+            </div>
+            <div class="card legal-card">
+                <h4><span class="icon-green">🤝</span> Success Fee Model</h4>
+                <p>Structured legally as technical consultants (not advocates), allowing performance-based success fees.</p>
+            </div>
+            <div class="card legal-card">
+                <h4><span class="icon-blue">🔒</span> BNSS §106</h4>
+                <p>We structure intake data perfectly so law enforcement can execute rapid bank account freezes under section 106.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. EXPERT MARKETPLACE -->
+    <section id="experts" class="container">
+        <div class="section-header reveal">
+            <span class="eyebrow">Vetted Expert Network</span>
+            <h2>CEH/CHFI-certified specialists for <em>every fraud type</em></h2>
+        </div>
+
+        <div class="filter-tabs reveal" id="expert-filters">
+            <button class="filter-tab active" data-category="all">All Experts</button>
+            <button class="filter-tab" data-category="investment">Investment</button>
+            <button class="filter-tab" data-category="digital_arrest">Digital Arrest</button>
+            <button class="filter-tab" data-category="upi">UPI/Banking</button>
+            <button class="filter-tab" data-category="sextortion">Sextortion</button>
+            <button class="filter-tab" data-category="ecommerce">E-Commerce</button>
+        </div>
+
+        <div class="grid-3x2 reveal" id="experts-grid">
+        </div>
+
+        <div class="expert-cta reveal">
+            <h3 style="font-family: var(--font-body); font-size: 1.25rem; margin-bottom: 1rem;">Are you a CEH/CHFI certified expert? Join the TraceBack network.</h3>
+            <a href="mailto:experts@traceback.in" class="btn btn-ghost">Apply to Join</a>
+        </div>
+    </section>
+
+    <!-- 11. REVENUE / BUSINESS MODEL -->
+    <section id="business" class="container">
+        <div class="section-header reveal">
+            <span class="eyebrow">Business Model</span>
+            <h2>Four revenue <em>streams</em></h2>
+        </div>
+
+        <div class="bm-grid reveal">
+            <div class="card bm-card">
+                <h4>Consultation + Success Fees</h4>
+                <p>₹1,999 – ₹24,999 + performance cuts. Primary B2C revenue stream.</p>
+            </div>
+            <div class="card bm-card">
+                <h4>B2B SME Retainers</h4>
+                <p>₹15K – ₹40K/mo for instant incident response for small businesses.</p>
+            </div>
+            <div class="card bm-card">
+                <h4>Cyber Insurance Partner</h4>
+                <p>Referral + vendor fees as preferred forensic vendor for major insurers.</p>
+            </div>
+            <div class="card bm-card">
+                <h4>Scam Intelligence Feed</h4>
+                <p>SaaS B2B API providing anonymised fraud pattern data for banks/fintechs.</p>
+            </div>
+        </div>
+
+        <div class="ins-table-wrapper reveal">
+            <table class="ins-table">
+                <thead>
+                    <tr>
+                        <th>Insurer</th>
+                        <th>Claim Settlement Ratio FY24</th>
+                        <th>Coverage Area</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tata AIG</strong></td>
+                        <td style="color:var(--green);">98.1%</td>
+                        <td>Pan-India</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Zurich Kotak</strong></td>
+                        <td style="color:var(--green);">97.9%</td>
+                        <td>India + International</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ICICI Lombard</strong></td>
+                        <td style="color:var(--green);">97.6%</td>
+                        <td>Pan-India + Global</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bajaj Allianz</strong></td>
+                        <td style="color:var(--green);">96.8%</td>
+                        <td>India + limited overseas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SBI General</strong></td>
+                        <td style="color:var(--green);">96.2%</td>
+                        <td>Pan-India</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 12. TRUST BAR -->
+    <div class="container reveal">
+        <div class="trust-bar">
+            <span>🔒 DPDP Act 2023 Compliant</span>
+            <span>⚖️ BSA 2023 Certified Evidence</span>
+            <span>🛡️ ISO 27001 (In Progress)</span>
+            <span>🏦 India-Hosted Data</span>
+            <span>✅ CEH/CHFI Verified Experts</span>
+        </div>
+    </div>
+
+    <!-- 13. FINAL CTA SECTION -->
+    <section class="final-cta container reveal">
+        <div class="badge" style="border-color: var(--red); color: var(--red);">
+            <div class="dot" style="width:8px; height:8px; background:var(--red); border-radius:50%; animation:pulse 2s infinite;"></div>
+            The Golden Hour is closing
+        </div>
+        <h2>Don't wait.<br><em>Every minute costs you money.</em></h2>
+        <p>59.1% of fraud funds are never recovered. The victims who act fast are the ones who get their money back.</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="#report" class="btn btn-red btn-lg">Report Your Fraud — Start Free</a>
+            <a href="#how-it-works" class="btn btn-ghost btn-lg">See How It Works</a>
+        </div>
+        <span class="fine-print">Private advisory platform · Not affiliated with government · Built for compliance-first recovery</span>
+    </section>
+
+    <!-- 14. FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo" style="margin-bottom: 1rem; display: inline-flex;">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <path d="M14 12h-4m0 0l2-2m-2 2l2 2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        TraceBack
+                    </a>
+                    <p>by Strawhats</p>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#crisis">Crisis Data</a>
+                    <a href="#legal">Legal</a>
+                    <a href="#tiers">Pricing</a>
+                    <a href="#experts">Experts</a>
+                    <a href="#report" style="color: var(--accent);">Report Fraud</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div>© 2026 TraceBack. All rights reserved. Concept by Strawhats.</div>
+                <div>Disclaimer: Private advisory platform · Not a law firm · Not affiliated with any government body</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // 1. Live Counter & Platform Stats
+        const counterEl = document.getElementById('live-counter');
+        const API_BASE = '/api';
+
+        async function fetchLiveStats() {
+            try {
+                const res = await fetch(`${API_BASE}/cases/stats/live`);
+                const data = await res.json();
+                if (data.status === 'success') {
+                    if (counterEl) counterEl.textContent = data.data.live_complaints_today.toLocaleString('en-IN');
+                }
+            } catch (err) {
+                console.error("Failed to fetch live stats:", err);
+            }
+        }
+        
+        // Initial fetch and then every 30s
+        fetchLiveStats();
+        setInterval(fetchLiveStats, 30000);
+
+        // 2. Theme Toggle
+        const html = document.documentElement;
+        const themeBtn = document.getElementById('theme-btn');
+        const mobileThemeBtn = document.getElementById('mobile-theme-btn');
+
+        function toggleTheme() {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            const icon = newTheme === 'dark' ? '☀️' : '🌙';
+            themeBtn.textContent = icon;
+            mobileThemeBtn.textContent = icon;
+        }
+
+        themeBtn.addEventListener('click', toggleTheme);
+        mobileThemeBtn.addEventListener('click', toggleTheme);
+
+        // 3. Mobile Nav
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileNav = document.getElementById('mobile-nav');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => mobileNav.classList.add('active'));
+        closeMenuBtn.addEventListener('click', () => mobileNav.classList.remove('active'));
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => mobileNav.classList.remove('active'));
+        });
+
+        // 4. Multi-step Form Logic
+        let currentStep = 1;
+
+        function updateStepDots() {
+            document.querySelectorAll('.step-dot').forEach(dot => {
+                const stepNum = parseInt(dot.getAttribute('data-step'));
+                dot.classList.remove('active', 'completed');
+                if (stepNum === currentStep) dot.classList.add('active');
+                if (stepNum < currentStep) dot.classList.add('completed');
+            });
+        }
+
+        function nextStep(step) {
+            // Basic validation mock (can be expanded)
+            const currentStepEl = document.getElementById(`step-${currentStep}`);
+            const requiredFields = currentStepEl.querySelectorAll('[required]');
+            let valid = true;
+            
+            // Just visual validation for demo purposes
+            requiredFields.forEach(field => {
+                if(!field.value && field.type !== 'checkbox') valid = false;
+                if(field.type === 'checkbox' && !field.checked) valid = false;
+            });
+
+            // Allow bypass for demo
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            currentStep = step;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            updateStepDots();
+        }
+
+        function prevStep(step) {
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            currentStep = step;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            updateStepDots();
+        }
+
+        // 5. Experts Fetch & Filter
+        const expertsGrid = document.getElementById('experts-grid');
+        const filterTabs = document.querySelectorAll('.filter-tab');
+
+        async function loadExperts(category = 'all') {
+            expertsGrid.style.opacity = '0.5';
+            try {
+                const url = category === 'all' ? `${API_BASE}/experts` : `${API_BASE}/experts?category=${category}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                
+                if (data.status === 'success') {
+                    renderExperts(data.data.experts);
+                }
+            } catch (err) {
+                console.error("Failed to load experts:", err);
+            } finally {
+                expertsGrid.style.opacity = '1';
+            }
+        }
+
+        function renderExperts(experts) {
+            expertsGrid.innerHTML = experts.map(exp => `
+                <div class="card expert-card reveal">
+                    <div class="avatar" style="background: ${exp.avatar_color || 'var(--accent)'}; color: ${exp.avatar_color ? '#fff' : '#000'}">${exp.avatar_initials || exp.name.split(' ').map(n => n[0]).join('')}</div>
+                    <h4>${exp.name}</h4>
+                    <span class="expert-title">${exp.specialization} — ${exp.institution || 'Verified'} | ${exp.certifications.join(' + ')}</span>
+                    <p class="expert-skills"><strong>Skills:</strong> ${exp.fraud_categories.join(', ')}</p>
+                    <div class="expert-footer">
+                        <span>₹${exp.rate_per_hour.toLocaleString('en-IN')}/hr</span>
+                        <span style="color:var(--green);">${exp.cases_resolved} cases resolved</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                loadExperts(tab.dataset.category);
+            });
+        });
+
+        // Initial Load
+        loadExperts();
+
+        // 6. Form Submit Real Logic
+        async function submitForm() {
+            const consent = document.getElementById('consent');
+            if(!consent.checked) {
+                alert("Please agree to the consent terms to proceed.");
+                return;
+            }
+
+            const btn = document.querySelector('#step-3 .btn-red');
+            const originalText = btn.textContent;
+            btn.textContent = 'Submitting...';
+            btn.disabled = true;
+
+            try {
+                // Collect Form Data
+                const step1 = document.getElementById('step-1');
+                const step2 = document.getElementById('step-2');
+                const step3 = document.getElementById('step-3');
+
+                const complaintData = {
+                    fraud_type: step1.querySelector('select').value.toLowerCase().replace(/ /g, '_'),
+                    amount_lost: parseFloat(step1.querySelector('input[type="text"]').value.replace(/[^0-9.]/g, '')),
+                    incident_date: step1.querySelector('input[type="datetime-local"]').value.split('T')[0],
+                    contact_channel: step1.querySelector('select:nth-of-type(2)').value.toLowerCase(),
+                    description: step1.querySelector('textarea').value,
+                    bank_name: step2.querySelector('input:nth-of-type(1)').value,
+                    victim_account: step2.querySelector('input:nth-of-type(2)').value,
+                    fraudster_contact: step2.querySelector('input:nth-of-type(3)').value,
+                    transaction_id: step2.querySelector('input:nth-of-type(4)').value,
+                    state: step3.querySelector('select:nth-of-type(1)').value,
+                    consent_dpdp: document.getElementById('consent').checked,
+                    victim: {
+                        name: step3.querySelector('input:nth-of-type(1)').value,
+                        phone: step3.querySelector('input[type="tel"]').value,
+                        email: step3.querySelector('input[type="email"]').value,
+                        state: step3.querySelector('select:nth-of-type(1)').value,
+                        language: step3.querySelector('select:nth-of-type(2)').value
+                    }
+                };
+
+                const formData = new FormData();
+                formData.append('json_data', JSON.stringify(complaintData));
+                
+                // Add files if any
+                // (Assuming a hidden input or just grabbing from the drag-drop area if implemented)
+                // For now, let's just send the JSON
+                
+                const res = await fetch(`${API_BASE}/complaints/submit`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await res.json();
+                
+                if (result.status === 'success' || result.code === 201) {
+                    document.getElementById('triage-form').style.display = 'none';
+                    document.getElementById('step-indicator').style.display = 'none';
+                    
+                    const successState = document.getElementById('form-success');
+                    successState.style.display = 'block';
+                    document.getElementById('gen-case-id').textContent = result.data.case_id;
+
+                    // Animate progress bar with real AI status
+                    document.getElementById('success-progress').style.width = '100%';
+                    document.getElementById('ai-status').textContent = 'AI Triage Complete! Email Dispatched.';
+                    document.getElementById('ai-status').style.color = 'var(--green)';
+                    
+                    if (result.data.triage_report) {
+                        const prob = result.data.triage_report.freeze_probability || 74;
+                        document.querySelector('.prob-badge').textContent = `${prob}% Estimated Freeze Probability — Act Now`;
+                    }
+                } else {
+                    alert("Submission failed: " + (result.message || "Unknown error"));
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                console.error("Submission error:", err);
+                alert("Failed to connect to server.");
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
