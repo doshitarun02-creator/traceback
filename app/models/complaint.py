@@ -91,7 +91,7 @@ class ComplaintCreate(BaseModel):
         description="UTR / TXN / cheque number",
     )
     bank_name: Optional[str] = Field(None, max_length=100)
-    description: str = Field(..., min_length=20, max_length=5000)
+    description: str = Field(..., min_length=5, max_length=5000)
 
     # Step 3 — Supporting Info & Consent
     evidence_files: List[EvidenceFile] = Field(default_factory=list)
@@ -113,7 +113,9 @@ class ComplaintCreate(BaseModel):
     @field_validator("incident_date")
     @classmethod
     def not_future(cls, v: date) -> date:
-        if v > date.today():
+        # Allow up to 1 day in future (timezone tolerance)
+        from datetime import timedelta
+        if v > date.today() + timedelta(days=1):
             raise ValueError("Incident date cannot be in the future.")
         return v
 

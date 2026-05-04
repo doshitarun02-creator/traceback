@@ -154,8 +154,21 @@ def unauthorised(message: str = "Authentication required."):
     return error(message, 401)
 
 
-def validation_error(errors: List[Dict[str, Any]], message: str = "Validation failed."):
-    return error(message, 422, errors)
+def validation_error(errors):
+    # Convert Pydantic errors to JSON-serializable format
+    if callable(errors):
+        errors = errors()
+    if hasattr(errors, '__iter__') and not isinstance(errors, str):
+        serializable_errors = [
+            {
+                "field": e.get("loc", ["unknown"])[-1] if isinstance(e, dict) else str(e),
+                "message": e.get("msg", str(e)) if isinstance(e, dict) else str(e)
+            }
+            for e in errors
+        ]
+    else:
+        serializable_errors = [{"message": str(errors)}]
+    return error("Validation failed", 422, serializable_errors)
 
 
 def server_error(message: str = "Internal server error."):
