@@ -8,7 +8,7 @@ from flask import Blueprint, request, g
 from pydantic import ValidationError
 import json
 
-from app.models.complaint import ComplaintCreate, VictimDetails, EvidenceFile, create_complaint
+from app.models.complaint import ComplaintCreate, VictimDetails, EvidenceFile, create_complaint, TimelineEntry
 from app.models.user import add_case_to_user
 from app.middleware.auth_middleware import token_required, get_current_user_id
 from app.extensions import mongo, file_service, gemini_service, email_service
@@ -64,7 +64,7 @@ def submit():
         victim_info = data.victim
         complaint = create_complaint(
             data=data,
-            user_id=user_id,
+            user_id=user_id or "system",
             victim=victim_info
         )
         
@@ -78,10 +78,19 @@ def submit():
     # 5. Trigger AI Triage
     try:
         triage_report = gemini_service.analyze_complaint(complaint["description"])
-        # Update complaint with triage report
+        # Update complaint with triage report and add timeline entry
         mongo.db.complaints.update_one(
             {"case_id": complaint["case_id"]},
-            {"$set": {"triage_result": triage_report, "status": "triaged"}}
+            {
+                "$set": {"triage_result": triage_report, "status": "triaged"},
+                "$push": {
+                    "timeline": TimelineEntry(
+                        actor="system",
+                        action="triage_complete",
+                        note=f"AI Triage completed. Urgency: {triage_report.get('urgency', 'N/A')}"
+                    ).model_dump()
+                }
+            }
         )
         complaint["triage_result"] = triage_report
         complaint["status"] = "triaged"
