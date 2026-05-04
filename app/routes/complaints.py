@@ -77,7 +77,7 @@ def submit():
 
     # 5. Trigger AI Triage
     try:
-        triage_report = gemini_service.analyze_complaint(complaint["description"])
+        triage_report = gemini_service.analyze_complaint(complaint)
         # Update complaint with triage report and add timeline entry
         mongo.db.complaints.update_one(
             {"case_id": complaint["case_id"]},

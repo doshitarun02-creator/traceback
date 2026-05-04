@@ -7,7 +7,7 @@ import requests
 import json
 import time
 
-BASE_URL = "http://127.0.0.1:5000/api"
+BASE_URL = "https://traceback-2xbr.onrender.com/api"
 TEST_USER = {
     "name": "Test Victim",
     "email": f"test_{int(time.time())}@example.com",
